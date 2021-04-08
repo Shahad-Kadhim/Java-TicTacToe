@@ -13,12 +13,14 @@ fun main() {
         println("\n\tPlease select your Game mode.")
         println("\n\t    (1) Human vs. Computer")
         println("\n\t    (2) Computer vs. Computer")
-        GameSetting.user_input = getInput("\n\tWhich mode would you like to play? (1/2): ")
+        println("\n\tWhich mode would you like to play? (1/2): ")
+        GameSetting.user_input = readLine()
 
         //Keep asking for an answer from the user until we get a 1 or a 2
         gameMode(GameSetting.user_input) //gameMode() is defines below
         println("\n\tHow large of a grid would you like to use? ")
-        GameSetting.user_input = getInput("\n\tPlease enter an integer between $minimumGameSize and $maximumGameSize: ")
+        println("\n\tPlease enter an integer between $minimumGameSize and $maximumGameSize: ")
+        GameSetting.user_input = readLine()
 
         //validate user unput for game size
         GameSetting.valid_input = false
@@ -28,14 +30,15 @@ fun main() {
             ) {
                 GameSetting.valid_input = true
             } else {
-                GameSetting.user_input = getInput("\n\tYou must enter a number between $minimumGameSize and $maximumGameSize: ")
+                println("\n\tYou must enter a number between $minimumGameSize and $maximumGameSize: ")
+                GameSetting.user_input = readLine()
             }
         }
 
         //issue warning for game sizes larger than 15
         if (GameSetting.user_input!!.toInt() > 15) {
             println("\n\t!!WARNING!!\n\t!!WARNING!!  Games large than 15 will not display correctly if console width is restricted to 80 col (neither will this message)\n\t!!WARNING!!")
-            getInput("")
+            readLine()
         }
         gameSize = GameSetting.user_input!!.toInt()
 
@@ -89,17 +92,6 @@ fun main() {
         }
     }
 
-    //encapsulated code for input stream buffer
-    fun getInput(prompt: String?): String {
-        val stdin = BufferedReader(InputStreamReader(System.`in`))
-        print(prompt)
-        System.out.flush()
-        return try {
-            stdin.readLine()
-        } catch (e: Exception) {
-            "Error: " + e.message
-        }
-    }
 
     //validates user input and sets the game mode
     private fun gameMode(user_input: String?) {
@@ -109,7 +101,8 @@ fun main() {
             if (userInput!!.length == 1 && userInput.substring(0, 1).matches(Regex("[1-2]"))) {
                 GameSetting.valid_input = true
             } else {
-                userInput = getInput("\n\tYou must enter '1' or '2' for the game mode: ")
+                println("\n\tYou must enter '1' or '2' for the game mode: ")
+                userInput = readLine()
             }
         }
 
