@@ -30,15 +30,10 @@ fun main() {
     GameSetting.game = Game(gameSize)
 
         //create an array of two players
-        val players = arrayOfNulls<Player>(2)
-
-        //set players to AI or Human depending on game mode
-        if (GameSetting.gameMode == 1) {
-            players[0] = Player("Human")
-            players[1] = Player("AI")
-        } else {
-            players[0] = Player("AI")
-            players[1] = Player("AI")
+        val players = arrayOfNulls<Player>(2).apply {
+            //set players to AI or Human depending on game mode
+            this[1] = Player("AI")
+            this[0] = if (GameSetting.gameMode == 1) Player("Human") else Player("AI")
         }
 
         //Draw the blank board initially to show user which columns and rows to choose from
