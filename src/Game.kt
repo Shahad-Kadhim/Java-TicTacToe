@@ -15,7 +15,7 @@ class Game(var gridSize: Int) {
 
     //places an X or an O in a cell ont he game map
     fun setCell(index: Int): Boolean {
-        return if (grid[index]!!.empty) {
+        return if (grid[index]!!.contents.isBlank()) {
             grid[index]!!.placeMark()
             true
         } else {
@@ -37,7 +37,7 @@ class Game(var gridSize: Int) {
         //if every cell is filled, end the game
         gridFilled = true
         for (i in 0 until gridSize * gridSize) {
-            if (grid[i]!!.empty) {
+            if (grid[i]!!.contents.isBlank()) {
                 gridFilled = false
             }
         }
@@ -79,7 +79,7 @@ class Game(var gridSize: Int) {
                     rowWin = false
                 }
                 for (j in 0 until row.size - 1) {
-                    if (row[i]!!.empty) {
+                    if (row[i]!!.contents.isBlank()) {
                         rowWin = false
                     }
                 }
@@ -102,7 +102,7 @@ class Game(var gridSize: Int) {
                     columnWin = false
                 }
                 for (j in 0 until column.size - 1) {
-                    if (column[i]!!.empty) {
+                    if (column[i]!!.contents.isBlank()) {
                         columnWin = false
                     }
                 }
@@ -125,7 +125,7 @@ class Game(var gridSize: Int) {
                     diagonalWin = false
                 }
                 for (j in 0 until diagonal.size - 1) {
-                    if (diagonal[i]!!.empty) {
+                    if (diagonal[i]!!.contents.isBlank()) {
                         diagonalWin = false
                     }
                 }
