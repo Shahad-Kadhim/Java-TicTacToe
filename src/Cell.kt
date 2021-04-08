@@ -3,6 +3,6 @@ class Cell {
     var contents = " "
     private set
     fun placeMark() {
-        contents = if (TicTacToe.count % 2 == 0)  "X"  else  "O"
+        contents = if (GameSetting.count % 2 == 0)  "X"  else  "O"
     }
 }

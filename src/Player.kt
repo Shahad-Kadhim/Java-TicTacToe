@@ -16,12 +16,12 @@ class Player  ( private val type: String) {
 
             //let user know that AI is going
             println("\tThe computer will now make a move..")
-            delay( TicTacToe.game!!.gridSize) //take a second to go to make it appear as if computer is thinking
+            delay( GameSetting.game!!.gridSize) //take a second to go to make it appear as if computer is thinking
             while (turn) {
                 //AI selects a random empty cell and places corrosponding mark
-                row = (0 until TicTacToe.game!!.gridSize).random()
-                col =(0 until TicTacToe.game!!.gridSize).random()
-                move(row,col, TicTacToe.game!!)
+                row = (0 until GameSetting.game!!.gridSize).random()
+                col =(0 until GameSetting.game!!.gridSize).random()
+                move(row,col, GameSetting.game!!)
             }
         } else {
             //while it's the player's turn...
@@ -30,13 +30,13 @@ class Player  ( private val type: String) {
                 println("\tPlease place an X on the grid.  You can\n\tdo this by typing 1A, 1B, 1C, 2A, etc.: ")
                 //while it's the player's turn...
                 while (turn) {
-                    readLine()!!.toUpperCase().takeIf {  it.substring(0,it.lastIndex).toIntOrNull()!=null&&it.last() in 'A'..(65+TicTacToe.game!!.gridSize-1).toChar()}?.takeIf { it.substring(0,it.lastIndex).toInt() in 1..TicTacToe.game!!.gridSize }?.
+                    readLine()!!.toUpperCase().takeIf {  it.substring(0,it.lastIndex).toIntOrNull()!=null&&it.last() in 'A'..(65+GameSetting.game!!.gridSize-1).toChar()}?.takeIf { it.substring(0,it.lastIndex).toInt() in 1..GameSetting.game!!.gridSize }?.
                     let {
                         row=it.last().toInt()-65
                         col=it.substring(0,it.lastIndex).toInt()-1
                         //if valid input, and cell isn't taken already,
                         //place mark in selected cell and end turn
-                        move(row!!, col!!,TicTacToe.game!!)
+                        move(row!!, col!!,GameSetting.game!!)
                         if(turn) println("That space is already in play!  Please choose another spot: ")
                     }
                     if(row==null) println("That's not valid input.  Please choose another spot: ")
