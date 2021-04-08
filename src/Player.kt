@@ -14,60 +14,45 @@ class Player     //constructor.  requires string to set player type
     //player "goes" while it's their turn
     fun go() {
         turn = true
-
+        var row :Int?=null
+        var col :Int?
         // if AI, do computery things
         if (type === "AI") {
 
             //let user know that AI is going
-            print("\tThe computer will now make a move..")
+            println("\tThe computer will now make a move..")
             delay(1000, TicTacToe.game!!.gridSize) //take a second to go to make it appear as if computer is thinking
             while (turn) {
                 //AI selects a random empty cell and places corrosponding mark
-                index = Math.round((TicTacToe.game!!.gridSize * TicTacToe.game!!.gridSize - 1) * Math.random())
-                    .toInt()
-                move(index, TicTacToe.game!!)
+                row = (0 until TicTacToe.game!!.gridSize).random()
+                col =(0 until TicTacToe.game!!.gridSize).random()
+                move(row,col, TicTacToe.game!!)
             }
         } else {
-            //if human, do human stuff
-            println("\tPlease place an X on the grid.  You can")
-            TicTacToe.user_input = TicTacToe.getInput("\tdo this by typing 1A, 1B, 1C, 2A, etc.: ")
-
             //while it's the player's turn...
             while (turn) {
-
-                //validate user input
-                if (valid_input(TicTacToe.user_input!!)) {
-                    if (TicTacToe.user_input!!.length == 2) {
-                        column = TicTacToe.user_input!!.substring(0, 1).toInt()
-                        row = letterToNumber(TicTacToe.user_input!!.substring(1, 2))
-                    } else {
-                        column = TicTacToe.user_input!!.substring(0, 2).toInt()
-                        row = letterToNumber(TicTacToe.user_input!!.substring(2, 3))
-                    }
-                    index = TicTacToe.game!!.gridSize * (row - 1) + (column - 1)
-                    if (index > TicTacToe.game!!.gridSize * TicTacToe.game!!.gridSize - 1 || index < 0) {
-                        TicTacToe.user_input =
-                            TicTacToe.getInput("That's not a valid spot!  Please choose another spot: ")
-                    } else {
-
+                //if human, do human stuff
+                println("\tPlease place an X on the grid.  You can\n\tdo this by typing 1A, 1B, 1C, 2A, etc.: ")
+                //while it's the player's turn...
+                while (turn) {
+                    readLine()!!.toUpperCase().takeIf {  it.substring(0,it.lastIndex).toIntOrNull()!=null&&it.last() in 'A'..(65+TicTacToe.game!!.gridSize-1).toChar()}?.takeIf { it.substring(0,it.lastIndex).toInt() in 1..TicTacToe.game!!.gridSize }?.
+                    let {
+                        row=it.last().toInt()-65
+                        col=it.substring(0,it.lastIndex).toInt()-1
                         //if valid input, and cell isn't taken already,
                         //place mark in selected cell and end turn
-                        move(index, TicTacToe.game!!)
-                        if (turn) {
-                            TicTacToe.user_input =
-                                TicTacToe.getInput("That space is already in play!  Please choose another spot: ")
-                        }
+                        move(row!!, col!!,TicTacToe.game!!)
+                        if(turn) println("That space is already in play!  Please choose another spot: ")
                     }
-                } else {
-                    TicTacToe.user_input = TicTacToe.getInput("That's not valid input.  Please choose another spot: ")
+                    if(row==null) println("That's not valid input.  Please choose another spot: ")
                 }
             }
-        }
+         }
     }
 
     //player places mark
-    private fun move(index: Int, game: Game) {
-        if (game.setCell(index)) {
+    private fun move(row: Int,col:Int, game: Game) {
+        if (game.setCell(row, col)) {
             turn = false
         }
     }

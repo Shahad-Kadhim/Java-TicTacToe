@@ -4,19 +4,24 @@ class Game(var gridSize: Int) {
     //with the help of the Cell class.
     var finished = false
     var draw = false
-    private val grid: Array<Cell?>
-
+    private val grid = arrayOfNulls<Array<Cell?>>(gridSize)
+    init {
+        grid.forEachIndexed { index, _ ->
+            grid[index] = arrayOfNulls(gridSize)
+            grid[index]!!.forEachIndexed { col, _ -> grid[index]?.set(col, Cell()) }
+        }
+    }
     //checks to see if a win condition has been met and
     //outputs the current game map to the console 
-    fun output(): String {
+    fun output() {
         checkForTicTacToe()
-        return drawMap()
+        drawMap()
     }
 
     //places an X or an O in a cell ont he game map
-    fun setCell(index: Int): Boolean {
-        return if (grid[index]!!.contents.isBlank()) {
-            grid[index]!!.placeMark()
+    fun setCell(row: Int,col:Int): Boolean {
+        return if (grid[row]!![col]!!.contents.isBlank()) {
+            grid[row]!![col]!!.placeMark()
             true
         } else {
             false
@@ -24,174 +29,59 @@ class Game(var gridSize: Int) {
     }
 
     //checks to see if a win condition has been met
-    private fun checkForTicTacToe(): Boolean {
-        var gridFilled: Boolean
-        var rowWin: Boolean
-        var columnWin: Boolean
-        var diagonalWin: Boolean
-        val rows = Array(gridSize) { arrayOfNulls<Cell>(gridSize) }
-        val columns = Array(gridSize) { arrayOfNulls<Cell>(gridSize) }
-        val diagonals =
-            Array(2) { arrayOfNulls<Cell>(gridSize) } //there are only ever two diagonals which complete a tictactoe in a square
+    private fun checkForTicTacToe() {
 
         //if every cell is filled, end the game
-        gridFilled = true
-        for (i in 0 until gridSize * gridSize) {
-            if (grid[i]!!.contents.isBlank()) {
-                gridFilled = false
-            }
+        if(grid.all { it!!.all{cell-> cell!!.contents.isNotBlank() } }){
+            finished=true
+            draw=true
         }
-        if (gridFilled) {
-            finished = true
-            draw = true
-        }
-        for (i in 0 until gridSize) {
-            for (j in 0 until gridSize) {
-                rows[i][j] = grid[gridSize * i + j]
-            }
-        }
-        for (i in 0 until gridSize) {
-            for (j in 0 until gridSize) {
-                columns[i][j] = grid[i + gridSize * j]
-            }
-        }
-        for (i in 0..1) {
-            if (i == 0) {
-                for (j in 0 until gridSize) {
-                    diagonals[i][j] = grid[(gridSize + 1) * j]
-                }
-            } else {
-                for (j in 0 until gridSize) {
-                    diagonals[i][j] = grid[(gridSize - 1) * (j + 1)]
-                }
-            }
-        }
-
         //if a row has all the same content and isnt empty
         //then the game is over
-        for (row in rows) {
-
-            //if the row elements are all the same and not empty
-            //set finished to true
-            rowWin = true
-            for (i in 0 until row.size - 1) {
-                if (row[i]!!.contents !== row[i + 1]!!.contents) {
-                    rowWin = false
-                }
-                for (j in 0 until row.size - 1) {
-                    if (row[i]!!.contents.isBlank()) {
-                        rowWin = false
-                    }
-                }
-            }
-            if (rowWin) {
-                finished = true
-                draw = false
-            }
+        if(grid.any { it!!.all {cell -> cell!!.contents=="X" } }||grid.any { it!!.all { cell ->cell!!.contents=="O" } })
+        {
+            finished=true
+            draw=false
         }
-
         //if a column has all the same content and isnt empty
         //then the game is over
-        for (column in columns) {
-
-            //if the column elements are all the same and not empty
-            //set finished to true
-            columnWin = true
-            for (i in 0 until column.size - 1) {
-                if (column[i]!!.contents !== column[i + 1]!!.contents) {
-                    columnWin = false
-                }
-                for (j in 0 until column.size - 1) {
-                    if (column[i]!!.contents.isBlank()) {
-                        columnWin = false
-                    }
-                }
-            }
-            if (columnWin) {
-                finished = true
-                draw = false
+        grid.forEachIndexed { row, chars ->
+            val m= mutableListOf<String>()
+            chars!!.forEachIndexed { col, _ -> m.add(grid[col]!![row]!!.contents)}
+            if(m.all { it=="X" }||m.all { it=="O" })
+            {
+                finished=true
+                draw=false
             }
         }
 
         //if a diagonal has all the same content and isnt empty
         //then the game is over
-        for (diagonal in diagonals) {
-
-            //if the diagonal elements are all the same and not empty
-            //set finished to true
-            diagonalWin = true
-            for (i in 0 until diagonal.size - 1) {
-                if (diagonal[i]!!.contents !== diagonal[i + 1]!!.contents) {
-                    diagonalWin = false
-                }
-                for (j in 0 until diagonal.size - 1) {
-                    if (diagonal[i]!!.contents.isBlank()) {
-                        diagonalWin = false
-                    }
-                }
-            }
-            if (diagonalWin) {
-                finished = true
-                draw = false
+        if(grid[0]!![0]!!.contents.isNotBlank()){
+            if(mutableListOf<String>().apply { grid.forEachIndexed { index, _ -> add(grid[index]!![index]!!.contents) } }.all { it==grid[0]!![0]!!.contents })
+            {
+                finished=true
+                draw=false
             }
         }
-        return finished
+        if(grid[0]!![gridSize-1]!!.contents.isNotBlank() ){
+            if(mutableListOf<String>().apply { grid.forEachIndexed { index, _ -> add(grid[index]!![gridSize-1-index]!!.contents) } }.all { it==grid[0]!![gridSize-1]!!.contents })
+            {
+                finished=true
+                draw=false
+            }
+        }
     }
 
     //draws the current game state in perfect proportion
     //
-    private fun drawMap(): String {
-        var top = "\t\t  "
-        var fill = "\t\t    "
-        var divider = "\t\t ---"
-        var meat = "\t\t"
-        val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        var map = "\n"
-        for (i in 1 until gridSize) {
-            top += "$i  "
-            if (i < 9) {
-                top += " "
-            }
-            fill += "|   "
-            divider += "+---"
-        }
-        top += "$gridSize \n"
-        fill += "\n"
-        divider += "\n"
-        map += top + fill
-        for (row in 1..1) {
-            for (column in 1..1) {
-                meat += alphabet.substring(row - 1, row) + " " + grid[3 * (row - 1) + (column - 1)]!!.contents
-                for (i in 2 until gridSize + 1) {
-                    meat += " | " + grid[3 * (row - 1) + (i - 1)]!!.contents
-                }
-            }
-            meat += "\n"
-        }
-        map += meat + fill
-        for (row in 2 until gridSize + 1) {
-            map += divider
-            map += fill
-            for (column in 1..1) {
-                meat = "\t\t" + alphabet.substring(row - 1, row) + " " + grid[gridSize * (row - 1) + (column - 1)]!!
-                    .contents
-                for (i in column + 1 until gridSize + 1) {
-                    meat += " | " + grid[gridSize * (row - 1) + (i - 1)]!!.contents
-                }
-            }
-            map += """
-                $meat
-                $fill
-                """.trimIndent()
-        }
-        return map
-    }
-
-    //constructor.  takes integer and generates a new Game with given size
-    init {
-        grid = arrayOfNulls(gridSize * gridSize)
-        for (i in grid.indices) {
-            grid[i] = Cell()
+    private fun drawMap() {
+        for (i in 1..gridSize) { print("\t\t${i}") }
+        println()
+        for (i in 0 until gridSize) {
+            print("${(i + 65).toChar()}\t")
+            grid[i]!!.forEach { print("|\t${it!!.contents}\t") }
+            println("|\n\t${"_".repeat(gridSize * (8))}")
         }
     }
 }
