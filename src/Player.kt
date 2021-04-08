@@ -16,7 +16,7 @@ class Player  ( private val type: String) {
 
             //let user know that AI is going
             println("\tThe computer will now make a move..")
-            delay(1000, TicTacToe.game!!.gridSize) //take a second to go to make it appear as if computer is thinking
+            delay( TicTacToe.game!!.gridSize) //take a second to go to make it appear as if computer is thinking
             while (turn) {
                 //AI selects a random empty cell and places corrosponding mark
                 row = (0 until TicTacToe.game!!.gridSize).random()
@@ -54,9 +54,9 @@ class Player  ( private val type: String) {
 
     companion object {
         //encapsulated code for AI delay behavior
-        private fun delay(amount: Int, gameSize: Int) {
+        private fun delay( gameSize: Int) {
             try {
-                Thread.sleep((amount * 3 / (gameSize * gameSize)).toLong())
+                Thread.sleep((3000 / (gameSize * gameSize)).toLong())
             } catch (ex: InterruptedException) {
                 Thread.currentThread().interrupt()
             }
