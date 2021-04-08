@@ -54,18 +54,8 @@ fun main() {
 
 
     //output an ending message to the game
-        if (GameSetting.game!!.draw) {
-            println("\n\tCat's game!")
-        } else {
-
-            //count variable from earlier is used to decide who went last and therefore won.
-            if (GameSetting.count % 2 == 1) {
-                println("\n\tX's win!")
-            } else {
-                println("\n\tO's win!")
-            }
-        }
-    }
+    println(if (GameSetting.game!!.draw) "\n\tCat's game!" else {if (GameSetting.count % 2 == 1) "\n\tX's win!" else "\n\tO's win!"})
+}
 
 
     //validates user input  game mode or game size
