@@ -4,9 +4,6 @@ import java.lang.Exception
 
 
 fun main() {
-        val minimumGameSize = 1
-        val maximumGameSize = 26
-
         //When program starts, user is met with a welcome message
         println("\n\tWelcome to this wonderful and lovely game of TicTacToe.")
         println("\n\tPlease select your Game mode.")
@@ -18,10 +15,10 @@ fun main() {
     GameSetting.gameMode=checkInputValid(2)
     //gameMode() is defines below
     println("\n\tHow large of a grid would you like to use? ")
-    println("\n\tPlease enter an integer between $minimumGameSize and $maximumGameSize: ")
+    println("\n\tPlease enter an integer between ${GameSetting.minimumGameSize} and ${GameSetting.maximumGameSize}: ")
 
     //validate user input for game size
-    val gameSize = checkInputValid(maximumGameSize)
+    val gameSize = checkInputValid(GameSetting.maximumGameSize)
 
     //issue warning for game sizes larger than 15
     gameSize.takeIf { it>15 }?.let{
