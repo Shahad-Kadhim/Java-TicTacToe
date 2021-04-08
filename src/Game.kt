@@ -36,14 +36,14 @@ class Game(var gridSize: Int) {
             finished=true
             draw=true
         }
-        //if a row has all the same content and isnt empty
+        //if a row has all the same content and isn't empty
         //then the game is over
         if(grid.any { it!!.all {cell -> cell!!.contents=="X" } }||grid.any { it!!.all { cell ->cell!!.contents=="O" } })
         {
             finished=true
             draw=false
         }
-        //if a column has all the same content and isnt empty
+        //if a column has all the same content and isn't empty
         //then the game is over
         grid.forEachIndexed { row, chars ->
             val m= mutableListOf<String>()
@@ -55,7 +55,7 @@ class Game(var gridSize: Int) {
             }
         }
 
-        //if a diagonal has all the same content and isnt empty
+        //if a diagonal has all the same content and isn't empty
         //then the game is over
         if(grid[0]!![0]!!.contents.isNotBlank()){
             if(mutableListOf<String>().apply { grid.forEachIndexed { index, _ -> add(grid[index]!![index]!!.contents) } }.all { it==grid[0]!![0]!!.contents })

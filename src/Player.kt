@@ -11,14 +11,14 @@ class Player  ( private val type: String) {
         turn = true
         var row :Int?=null
         var col :Int?
-        // if AI, do computery things
+        // if AI, do computer things
         if (type === "AI") {
 
             //let user know that AI is going
             println("\tThe computer will now make a move..")
             delay( GameSetting.game!!.gridSize) //take a second to go to make it appear as if computer is thinking
             while (turn) {
-                //AI selects a random empty cell and places corrosponding mark
+                //AI selects a random empty cell and places corresponding mark
                 row = (0 until GameSetting.game!!.gridSize).random()
                 col =(0 until GameSetting.game!!.gridSize).random()
                 move(row,col, GameSetting.game!!)
