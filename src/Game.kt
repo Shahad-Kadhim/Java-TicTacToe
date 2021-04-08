@@ -75,7 +75,7 @@ class Game(var gridSize: Int) {
             //set finished to true
             rowWin = true
             for (i in 0 until row.size - 1) {
-                if (row[i]!!.output() !== row[i + 1]!!.output()) {
+                if (row[i]!!.contents !== row[i + 1]!!.contents) {
                     rowWin = false
                 }
                 for (j in 0 until row.size - 1) {
@@ -98,7 +98,7 @@ class Game(var gridSize: Int) {
             //set finished to true
             columnWin = true
             for (i in 0 until column.size - 1) {
-                if (column[i]!!.output() !== column[i + 1]!!.output()) {
+                if (column[i]!!.contents !== column[i + 1]!!.contents) {
                     columnWin = false
                 }
                 for (j in 0 until column.size - 1) {
@@ -121,7 +121,7 @@ class Game(var gridSize: Int) {
             //set finished to true
             diagonalWin = true
             for (i in 0 until diagonal.size - 1) {
-                if (diagonal[i]!!.output() !== diagonal[i + 1]!!.output()) {
+                if (diagonal[i]!!.contents !== diagonal[i + 1]!!.contents) {
                     diagonalWin = false
                 }
                 for (j in 0 until diagonal.size - 1) {
@@ -161,9 +161,9 @@ class Game(var gridSize: Int) {
         map += top + fill
         for (row in 1..1) {
             for (column in 1..1) {
-                meat += alphabet.substring(row - 1, row) + " " + grid[3 * (row - 1) + (column - 1)]!!.output()
+                meat += alphabet.substring(row - 1, row) + " " + grid[3 * (row - 1) + (column - 1)]!!.contents
                 for (i in 2 until gridSize + 1) {
-                    meat += " | " + grid[3 * (row - 1) + (i - 1)]!!.output()
+                    meat += " | " + grid[3 * (row - 1) + (i - 1)]!!.contents
                 }
             }
             meat += "\n"
@@ -174,9 +174,9 @@ class Game(var gridSize: Int) {
             map += fill
             for (column in 1..1) {
                 meat = "\t\t" + alphabet.substring(row - 1, row) + " " + grid[gridSize * (row - 1) + (column - 1)]!!
-                    .output()
+                    .contents
                 for (i in column + 1 until gridSize + 1) {
-                    meat += " | " + grid[gridSize * (row - 1) + (i - 1)]!!.output()
+                    meat += " | " + grid[gridSize * (row - 1) + (i - 1)]!!.contents
                 }
             }
             map += """
