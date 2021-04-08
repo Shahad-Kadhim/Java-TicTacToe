@@ -41,23 +41,19 @@ fun main() {
 
         //until the game is over, go back and forth between players in players array
         //output the game map to the screen after each move
-        while (!GameSetting.game!!.finished) {
-            for (player in players) {
-                player!!.go()
-                println(
-                    """
-    
-    ${GameSetting.game!!.output()}
-    """.trimIndent()
-                )
-                GameSetting.count += 1
-                if (GameSetting.game!!.finished) {
-                    break
-                }
+    do {
+        for (player in players) {
+            player!!.go()
+            GameSetting.count ++
+            GameSetting.game!!.output()
+            if (GameSetting.game!!.finished) {
+                break
             }
         }
+    }while ( !GameSetting.game!!.finished)
 
-        //output an ending message to the game
+
+    //output an ending message to the game
         if (GameSetting.game!!.draw) {
             println("\n\tCat's game!")
         } else {
