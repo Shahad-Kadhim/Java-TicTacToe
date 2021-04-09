@@ -30,16 +30,18 @@ class Player  ( private val type: String) {
                 println("\tPlease place an X on the grid.  You can\n\tdo this by typing 1A, 1B, 1C, 2A, etc.: ")
                 //while it's the player's turn...
                 while (turn) {
-                    readLine()!!.toUpperCase().takeIf {  it.substring(0,it.lastIndex).toIntOrNull()!=null&&it.last() in 'A'..(65+GameSetting.game!!.gridSize-1).toChar()}?.takeIf { it.substring(0,it.lastIndex).toInt() in 1..GameSetting.game!!.gridSize }?.
-                    let {
-                        row=it.last().toInt()-65
-                        col=it.substring(0,it.lastIndex).toInt()-1
-                        //if valid input, and cell isn't taken already,
-                        //place mark in selected cell and end turn
-                        move(row!!, col!!,GameSetting.game!!)
-                        if(turn) println("That space is already in play!  Please choose another spot: ")
+                    readLine()!!.toUpperCase().takeIf { it.isNotEmpty() }?.let {
+                        it.takeIf {
+                            it.substring(0,it.lastIndex).toIntOrNull()!=null&&it.last() in 'A'..(65+GameSetting.game!!.gridSize-1).toChar()}?.takeIf { it.substring(0,it.lastIndex).toInt() in 1..GameSetting.game!!.gridSize }?.let {
+                                row=it.last().toInt()-65
+                                col=it.substring(0,it.lastIndex).toInt()-1
+                                //if valid input, and cell isn't taken already,
+                                //place mark in selected cell and end turn
+                                move(row!!, col!!,GameSetting.game!!)
+                                if(turn) println("That space is already in play!  Please choose another spot: ")
+                            }
                     }
-                    if(row==null) println("That's not valid input.  Please choose another spot: ")
+                        if(row==null) println("That's not valid input.  Please choose another spot: ")
                 }
             }
          }
